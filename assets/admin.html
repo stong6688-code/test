@@ -353,17 +353,27 @@
 
     function deleteRow(arrayKey, index) { localState[arrayKey].splice(index, 1); renderAllTables(); }
 
-    async function saveAllToCloud() {
-      localState.siteTitle = document.getElementById('siteTitle').value.trim();
-      localState.siteNotice = document.getElementById('siteNotice').value.trim();
-      localState.formEnabled = document.getElementById('formEnabled').checked;
-      localState.routingMode = document.querySelector('input[name="routingMode"]:checked').value;
-      try {
-        const res = await fetch('/admin/update-kv', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ config: localState }) });
-        if (res.ok) alert('🎉 成功！配置已固化到云端 KV 数据库！');
-        else alert('同步失败：' + res.status);
-      } catch (e) { alert('数据传输错误，请稍后重试。'); }
-    }
+        async function saveAllToCloud() {
+            localState.siteTitle = document.getElementById('siteTitle').value.trim();
+            localState.siteNotice = document.getElementById('siteNotice').value.trim();
+            localState.formEnabled = document.getElementById('formEnabled').checked;
+            
+            const checkedRadio = document.querySelector('input[name="routingMode"]:checked');
+            localState.routingMode = checkedRadio ? checkedRadio.value : "Single";
+
+            try {
+                // 【核心修改】将请求路径改为全站独立的绝对 API 接口，彻底避免 .html 路径带来的多级路由错位
+                const res = await fetch('/api/update-kv-data', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ config: localState }) 
+                });
+
+                if(res.ok) alert('🎉 成功！配置已固化到云端 KV 数据库！');
+                else alert('同步失败，状态码：' + res.status);
+            } catch(e) { alert('数据传输错误，请稍后重试。'); }
+        }
+
 
     async function doLogout() { await fetch('/admin/logout-api'); location.reload(); }
     function esc(str) { return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ''; }
