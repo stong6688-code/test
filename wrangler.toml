@@ -2,20 +2,22 @@ name = "watch-admin-system"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
-# 静态资源目录配置（Workers 资产全栈模式）
+# 静态资源目录配置
 [assets]
 directory = "./public"
 binding = "ASSETS"
-# 必须让 Worker 优先处理 API 和后台拦截逻辑
-run_worker_first = ["/api/*", "/admin*", "/admin/*"]
+# 🌟 关键修改一：加上未找到的处理模式（SPA模式能完美防止页面刷新空白）
+not_found_handling = "single-page-application"
+# 🌟 关键修改二：只让 Worker 拦截 API 动态接口，不要让 Worker 拦截静态资源路径
+run_worker_first = ["/api/*", "/admin/login-api", "/admin/update-kv", "/admin/logout-api"]
 
 # KV 数据库绑定
 [[kv_namespaces]]
 binding = "DATA_KV"
 id = "cd19620ffd864cb39261021accd1b602"
 
-# 环境变量配置（后台登录凭证）
+# 环境变量配置
 [vars]
 ADMIN_USER = "admin"
-ADMIN_PASSWORD = "admin123"      # 部署前请修改此密码
+ADMIN_PASSWORD = "mySecurePassword123"      
 SESSION_SECRET = "SulanPeptide-Admin-2026-aVeryLongRandomSecret-9x7K2m"
