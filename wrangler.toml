@@ -17,5 +17,5 @@ id = "cd19620ffd864cb39261021accd1b602"
 # 环境变量配置（后台登录凭证）
 [vars]
 ADMIN_USER = "admin"
-ADMIN_PASSWORD = "mySecurePassword123"      # 部署前请修改此密码
+ADMIN_PASSWORD = "admin123"      # 部署前请修改此密码
 SESSION_SECRET = "SulanPeptide-Admin-2026-aVeryLongRandomSecret-9x7K2m"
