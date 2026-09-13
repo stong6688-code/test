@@ -1,359 +1,285 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="UTF-8">
-  <title>Sulan Peptide — Campaign Center</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f3f4f6;
-      color: #111827;
-      margin: 0;
-      display: flex;
-      height: 100vh;
-    }
-
-    .sidebar {
-      width: 240px;
-      background: #111827;
-      color: #9ca3af;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .sidebar h2 {
-      color: white;
-      font-size: 16px;
-      margin: 0 0 30px 0;
-      text-align: center;
-    }
-
-    .sidebar div {
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-bottom: 5px;
-      font-size: 14px;
-    }
-
-    .sidebar .active {
-      background: #1f2937;
-      color: white;
-    }
-
-    .main {
-      flex: 1;
-      padding: 30px;
-      box-sizing: border-box;
-      overflow-y: auto;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 15px;
-      margin-bottom: 25px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      margin-bottom: 25px;
-      border: 1px solid #e5e7eb;
-    }
-
-    h3 {
-      margin: 0 0 20px 0;
-      border-bottom: 1px solid #f3f4f6;
-      padding-bottom: 12px;
-      font-size: 16px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 25px;
-    }
-
-    .stat-card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .stat-card .value {
-      font-size: 24px;
-      font-weight: 700;
-      margin-top: 5px;
-    }
-
-    .btn {
-      padding: 8px 16px;
-      background: #111827;
-      color: white;
-      border: 1px solid #111827;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .btn-danger {
-      background: white;
-      color: #dc2626;
-      border-color: #fca5a5;
-    }
-
-    .btn-cloud {
-      background: #2563eb;
-      border-color: #2563eb;
-      padding: 12px 24px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th,
-    td {
-      text-align: left;
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-      font-size: 14px;
-    }
-
-    th {
-      background: #f9fafb;
-      color: #4b5563;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      width: 340px;
-      box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Sulan Peptide — Campaign Center</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #f3f4f6; color: #111827; margin: 0; display: flex; height: 100vh; }
+        .sidebar { width: 240px; background: #111827; color: #9ca3af; padding: 20px; box-sizing: border-box; }
+        .sidebar h2 { color: white; font-size: 16px; margin: 0 0 30px 0; text-align: center; font-weight: 700; letter-spacing: 1px; }
+        .sidebar div.menu-item { padding: 12px 15px; border-radius: 6px; cursor: pointer; margin-bottom: 5px; font-size: 14px; transition: all 0.2s; }
+        .sidebar div.menu-item:hover, .sidebar div.menu-item.active { background: #1f2937; color: white; }
+        .main { flex: 1; padding: 30px; box-sizing: border-box; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; margin-bottom: 25px; }
+        .card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #e5e7eb; }
+        h3 { margin: 0 0 20px 0; border-bottom: 1px solid #f3f4f6; padding-bottom: 12px; font-size: 16px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; border: 1px solid #e5e7eb; }
+        .stat-card .value { font-size: 24px; font-weight: 700; margin-top: 5px; }
+        .btn { padding: 8px 16px; background: #111827; color: white; border: 1px solid #111827; border-radius: 6px; cursor: pointer; font-size: 13px; }
+        .btn-danger { background: white; color: #dc2626; border-color: #fca5a5; }
+        .btn-cloud { background: #2563eb; border-color: #2563eb; padding: 12px 24px; font-size: 14px; font-weight: 600; }
+        input[type="text"] { padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+        th { background: #f9fafb; color: #4b5563; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 340px; box-shadow: 0 20px 25px rgba(0,0,0,0.1); }
+    </style>
 </head>
-
 <body>
-  <div class="sidebar">
-    <h2>SULAN PEPTIDE</h2>
-    <div class="active">◈ 控制面板</div>
-    <div>◫ 数据分析</div>
-    <div>▣ 询盘管理</div>
-    <div>◉ WhatsApp</div>
-    <div>◌ 像素管理</div>
-    <div>≡ 事件中心</div>
-    <div>⚙ 系统设置</div>
-  </div>
+    <!-- 左侧导航栏 -->
+    <div class="sidebar">
+        <h2>SULAN PEPTIDE</h2>
+        <div class="menu-item active" onclick="switchTab(0)">◈ 控制面板</div>
+        <div class="menu-item" onclick="switchTab(1)">◫ 数据分析</div>
+        <div class="menu-item" onclick="switchTab(2)">▣ 询盘管理</div>
+        <div class="menu-item" onclick="switchTab(3)">◉ WhatsApp</div>
+        <div class="menu-item" onclick="switchTab(4)">◌ 像素管理</div>
+        <div class="menu-item" onclick="switchTab(5)">≡ 事件中心</div>
+        <div class="menu-item" onclick="switchTab(6)">⚙ 系统设置</div>
+    </div>
+    
+    <!-- 右侧主大盘 -->
+    <div class="main">
+        <div class="header">
+            <span id="pageTitle" style="font-size: 20px; font-weight: 700;">◈ 控制面板</span>
+            <div>
+                <button class="btn" onclick="location.reload()">刷新数据</button>
+                <button class="btn btn-danger" onclick="doLogout()">退出登录</button>
+            </div>
+        </div>
 
-  <div class="main">
-    <div class="header">
-      <span style="font-size: 20px; font-weight: 700;">Campaign Center · 管理后台</span>
-      <div>
-        <button class="btn" onclick="location.reload()">刷新</button>
-        <button class="btn btn-danger" onclick="doLogout()">退出登录</button>
-      </div>
+        <div style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 14px; color: #4b5563;">修改任何页签下的配置后，点击右侧按钮统一固化到云端。</div>
+            <button class="btn btn-cloud" onclick="saveAllToCloud()">💾 保存全部配置到 KV 数据库</button>
+        </div>
+
+        <!-- 标签块 0：控制面板 -->
+        <div id="tab-0" class="tab-content active">
+            <div class="grid-3">
+                <div class="stat-card"><div style="font-size:13px;color:#4b5563;">页面访问量 / PageViews</div><div class="value">—</div></div>
+                <div class="stat-card"><div style="font-size:13px;color:#4b5563;">WhatsApp Clicks / 点击数</div><div class="value">—</div></div>
+                <div class="stat-card"><div style="font-size:13px;color:#4b5563;">表单提交数 / Leaded</div><div class="value">—</div></div>
+            </div>
+            <div class="card">
+                <h3>基础配置 / Base Configuration</h3>
+                <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                    <div style="flex: 1;"><label style="font-size:13px;font-weight:600;">网站主标题</label><input type="text" id="siteTitle" style="margin-top:6px;"></div>
+                    <div style="flex: 1;"><label style="font-size:13px;font-weight:600;">系统运行公告</label><input type="text" id="siteNotice" style="margin-top:6px;"></div>
+                </div>
+                <label style="cursor:pointer;"><input type="checkbox" id="formEnabled"> <strong>启用前台询盘表单模块功能</strong></label>
+            </div>
+        </div>
+
+        <!-- 标签块 1：数据分析 -->
+        <div id="tab-1" class="tab-content">
+            <div class="card">
+                <h3>转化漏斗明细 / Attribution Metrics</h3>
+                <p style="color:#6b7280; font-size:14px;">数据漏斗统计图表正在连接边缘流式分析引擎，后续将按日期/广告系列动态展示归因明细。</p>
+            </div>
+        </div>
+
+        <!-- 标签块 2：询盘管理 -->
+        <div id="tab-2" class="tab-content">
+            <div class="card">
+                <h3>询盘订单大盘总览</h3>
+                <table><thead><tr><th>Time / 时间</th><th>Name / 客户姓名</th><th>Contact / 联系方式</th><th>Status / 状态</th></tr></thead><tbody><tr><td colspan="4" style="text-align:center; color:#9ca3af;">暂无新录入的表单询盘数据</td></tr></tbody></table>
+            </div>
+        </div>
+
+        <!-- 标签块 3：WhatsApp 管理 -->
+        <div id="tab-3" class="tab-content">
+            <div class="card">
+                <h3>流量路由分流模式 / Traffic Routing Mode</h3>
+                <div class="radio-group" style="display:flex; gap:24px; margin: 10px 0;">
+                    <label style="cursor:pointer;"><input type="radio" name="routingMode" value="Single"> Single / Default（固定使用首个主号码）</label>
+                    <label style="cursor:pointer;"><input type="radio" name="routingMode" value="Round Robin"> Round Robin（多客服号码轮询分流）</label>
+                </div>
+            </div>
+            <div class="card">
+                <h3>WhatsApp 客服号码池 <button class="btn" style="float:right;" onclick="openModal('waModal')">+ 添加号码</button></h3>
+                <table><thead><tr><th>Label / 标识名称</th><th>Phone number / 电话号码</th><th style="width: 80px;">操作</th></tr></thead><tbody id="waTable"></tbody></table>
+            </div>
+        </div>
+
+        <!-- 标签块 4：像素管理 -->
+        <div id="tab-4" class="tab-content">
+            <div class="card">
+                <h3>Meta Pixels 广告像素 <button class="btn" style="float:right;" onclick="openModal('metaModal')">+ Add Meta Pixel</button></h3>
+                <table><thead><tr><th>Pixel ID</th><th>Name / 区分名称</th><th style="width: 80px;">操作</th></tr></thead><tbody id="metaTable"></tbody></table>
+            </div>
+            <div class="card">
+                <h3>TikTok Pixels 广告像素 <button class="btn" style="float:right;" onclick="openModal('tiktokModal')">+ Add TikTok Pixel</button></h3>
+                <table><thead><tr><th>Pixel ID</th><th>Name / 区分名称</th><th style="width: 80px;">操作</th></tr></thead><tbody id="tiktokTable"></tbody></table>
+            </div>
+        </div>
+
+        <!-- 标签块 5：事件中心 -->
+        <div id="tab-5" class="tab-content">
+            <div class="card">
+                <h3>实时触发埋点追踪中心</h3>
+                <table><thead><tr><th>Time</th><th>Event / 事件名</th><th>Source / 流量来源</th><th>Campaign / 广告系列</th></tr></thead><tbody><tr><td colspan="4" style="text-align:center; color:#9ca3af;">Loading events... 正在监听前端像素及跳转事件</td></tr></tbody></table>
+            </div>
+        </div>
+
+        <!-- 标签块 6：系统设置 -->
+        <div id="tab-6" class="tab-content">
+            <div class="card" style="background: #f9fafb;">
+                <h3>系统底层互联状态</h3>
+                <div style="font-size: 14px; line-height: 2.2;">
+                    <div>● Worker 云端计算网关: <strong style="color: #10b981;">Connected / 联通正常</strong></div>
+                    <div>● Configuration KV 数据库底座: <strong style="color: #10b981;">Connected / 联通正常</strong></div>
+                    <div>● Asset binding 静态资产全栈引擎: <strong style="color: #10b981;">Connected / 联通正常</strong></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
-      <div style="font-size: 14px; color: #4b5563;">修改下方配置后，请务必点击右侧按钮同步至云端。</div>
-      <button class="btn btn-cloud" onclick="saveAllToCloud()">💾 保存全部配置到 KV 数据库</button>
-    </div>
+    <!-- 弹窗资产组件 -->
+    <div id="waModal" class="modal"><div class="modal-content">
+        <h4>添加 WhatsApp 号码</h4>
+        <input type="text" id="waLabel" placeholder="名称标签 (如: 客服01)" style="margin-bottom:12px;">
+        <input type="text" id="waNum" placeholder="电话号码 (含国家代码)">
+        <div style="text-align:right; margin-top:20px;"><button class="btn btn-danger" onclick="closeModal('waModal')">取消</button> <button class="btn" onclick="addWa()">确定</button></div>
+    </div></div>
+    <div id="metaModal" class="modal"><div class="modal-content">
+        <h4>添加 Meta Pixel</h4>
+        <input type="text" id="metaId" placeholder="Pixel ID" style="margin-bottom:12px;">
+        <input type="text" id="metaName" placeholder="像素自定义名称">
+        <div style="text-align:right; margin-top:20px;"><button class="btn btn-danger" onclick="closeModal('metaModal')">取消</button> <button class="btn" onclick="addPixel('meta')">保存</button></div>
+    </div></div>
+    <div id="tiktokModal" class="modal"><div class="modal-content">
+        <h4>添加 TikTok Pixel</h4>
+        <input type="text" id="tiktokId" placeholder="Pixel ID" style="margin-bottom:12px;">
+        <input type="text" id="tiktokName" placeholder="像素自定义名称">
+    <script>
+        // 初始化本地大盘状态树
+        let localState = { 
+            siteTitle: "SULAN PEPTIDE", 
+            siteNotice: "系统正常运行", 
+            formEnabled: true, 
+            routingMode: "Single", 
+            whatsappNumbers: [], 
+            metaPixels: [], 
+            tiktokPixels: [] 
+        };
 
-    <div class="grid-3">
-      <div class="stat-card">
-        <div style="font-size:13px;color:#4b5563;">页面访问量</div>
-        <div class="value">—</div>
-      </div>
-      <div class="stat-card">
-        <div style="font-size:13px;color:#4b5563;">WhatsApp 点击数</div>
-        <div class="value">—</div>
-      </div>
-      <div class="stat-card">
-        <div style="font-size:13px;color:#4b5563;">表单提交数</div>
-        <div class="value">—</div>
-      </div>
-    </div>
+        // 核心：左侧导航栏的 Tab 页签切换联动逻辑
+        function switchTab(tabIndex) {
+            // 1. 切换右侧主体卡片的隐藏与显示
+            document.querySelectorAll('.tab-content').forEach((content, idx) => {
+                if(idx === tabIndex) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
 
-    <div class="card">
-      <h3>基础配置 / Base Configuration</h3>
-      <div style="display: flex; gap: 20px; margin-bottom: 15px;">
-        <div style="flex: 1;"><label style="font-size:13px;font-weight:600;">网站主标题</label><input type="text"
-            id="siteTitle" style="margin-top:6px;"></div>
-        <div style="flex: 1;"><label style="font-size:13px;font-weight:600;">系统运行公告</label><input type="text"
-            id="siteNotice" style="margin-top:6px;"></div>
-      </div>
-      <label style="cursor:pointer;"><input type="checkbox" id="formEnabled"> <strong>启用询盘表单功能</strong></label>
-    </div>
-
-    <div class="card">
-      <h3>流量路由模式 / Traffic Routing Mode</h3>
-      <div style="display:flex; gap:24px; margin: 10px 0;">
-        <label style="cursor:pointer;"><input type="radio" name="routingMode" value="Single"> Single /
-          Default（固定单一号码）</label>
-        <label style="cursor:pointer;"><input type="radio" name="routingMode" value="Round Robin"> Round
-          Robin（多号码轮询分流）</label>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>WhatsApp 号码管理 <button class="btn" style="float:right;" onclick="openModal('waModal')">+ 添加号码</button></h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Label / 名称</th>
-            <th>Phone number / 电话号码</th>
-            <th style="width: 80px;">操作</th>
-          </tr>
-        </thead>
-        <tbody id="waTable"></tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <h3>Meta Pixels 像素管理 <button class="btn" style="float:right;" onclick="openModal('metaModal')">+ Add Meta
-          Pixel</button></h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Pixel ID</th>
-            <th>Name / 区分名称</th>
-            <th style="width: 80px;">操作</th>
-          </tr>
-        </thead>
-        <tbody id="metaTable"></tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <h3>TikTok Pixels 像素管理 <button class="btn" style="float:right;" onclick="openModal('tiktokModal')">+ Add TikTok
-          Pixel</button></h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Pixel ID</th>
-            <th>Name / 区分名称</th>
-            <th style="width: 80px;">操作</th>
-          </tr>
-        </thead>
-        <tbody id="tiktokTable"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 模态框组件 -->
-  <div id="waModal" class="modal">
-    <div class="modal-content">
-      <h4>添加 WhatsApp 号码</h4>
-      <input type="text" id="waLabel" placeholder="名称标签 (如: 客服01)" style="margin-bottom:12px;">
-      <input type="text" id="waNum" placeholder="电话号码 (含国家代码)">
-      <div style="text-align:right; margin-top:20px;"><button class="btn btn-danger"
-          onclick="closeModal('waModal')">取消</button> <button class="btn" onclick="addWa()">确定</button></div>
-    </div>
-  </div>
-
-  <div id="metaModal" class="modal">
-    <div class="modal-content">
-      <h4>添加 Meta Pixel</h4>
-      <input type="text" id="metaId" placeholder="Pixel ID" style="margin-bottom:12px;">
-      <input type="text" id="metaName" placeholder="像素名称">
-      <div style="text-align:right; margin-top:20px;"><button class="btn btn-danger"
-          onclick="closeModal('metaModal')">取消</button> <button class="btn" onclick="addPixel('meta')">保存</button></div>
-    </div>
-  </div>
-
-  <div id="tiktokModal" class="modal">
-    <div class="modal-content">
-      <h4>添加 TikTok Pixel</h4>
-      <input type="text" id="tiktokId" placeholder="Pixel ID" style="margin-bottom:12px;">
-      <input type="text" id="tiktokName" placeholder="像素名称">
-      <div style="text-align:right; margin-top:20px;"><button class="btn btn-danger"
-          onclick="closeModal('tiktokModal')">取消</button> <button class="btn" onclick="addPixel('tiktok')">保存</button>
-      </div>
-    </div>
-  </div>
-  <script>
-    let localState = { siteTitle: "SULAN PEPTIDE", siteNotice: "系统正常运行", formEnabled: true, routingMode: "Single", whatsappNumbers: [], metaPixels: [], tiktokPixels: [] };
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const response = await fetch('/api/get-public-data');
-        if (response.ok) {
-          const cloudData = await response.json();
-          localState = Object.assign(localState, cloudData);
-          document.getElementById('siteTitle').value = localState.siteTitle;
-          document.getElementById('siteNotice').value = localState.siteNotice;
-          document.getElementById('formEnabled').checked = localState.formEnabled;
-          const radioBtn = document.querySelector(`input[name="routingMode"][value="${localState.routingMode}"]`);
-          if (radioBtn) radioBtn.checked = true;
-          renderAllTables();
+            // 2. 切换左侧菜单项的高亮聚焦状态
+            document.querySelectorAll('.sidebar .menu-item').forEach((item, idx) => {
+                if(idx === tabIndex) {
+                    item.classList.add('active');
+                    // 动态更新右侧面包屑顶栏的主题文本
+                    document.getElementById('pageTitle').innerText = item.innerText;
+                } else {
+                    item.classList.remove('active');
+                }
+            });
         }
-      } catch (err) { console.error("从 KV 载入状态失败:", err); }
-    });
 
-    function renderAllTables() {
-      document.getElementById('waTable').innerHTML = localState.whatsappNumbers.map((item, index) => `<tr><td>${esc(item.label)}</td><td><code>${esc(item.number)}</code></td><td><button class="btn btn-danger" onclick="deleteRow('whatsappNumbers', ${index})">删除</button></td></tr>`).join('');
-      document.getElementById('metaTable').innerHTML = localState.metaPixels.map((item, index) => `<tr><td><code>${esc(item.id)}</code></td><td>${esc(item.name)}</td><td><button class="btn btn-danger" onclick="deleteRow('metaPixels', ${index})">删除</button></td></tr>`).join('');
-      document.getElementById('tiktokTable').innerHTML = localState.tiktokPixels.map((item, index) => `<tr><td><code>${esc(item.id)}</code></td><td>${esc(item.name)}</td><td><button class="btn btn-danger" onclick="deleteRow('tiktokPixels', ${index})">删除</button></td></tr>`).join('');
-    }
+        // 首屏异步从网关拉取已存在于 KV 数据库的数据，实现表单回填
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/get-public-data');
+                if (response.ok) {
+                    const cloudData = await response.json();
+                    localState = Object.assign(localState, cloudData);
+                    
+                    // 映射填装基础输入框
+                    document.getElementById('siteTitle').value = localState.siteTitle;
+                    document.getElementById('siteNotice').value = localState.siteNotice;
+                    document.getElementById('formEnabled').checked = localState.formEnabled;
+                    
+                    // 激活对应的路由分流单选框状态
+                    const radioBtn = document.querySelector(`input[name="routingMode"][value="${localState.routingMode}"]`);
+                    if(radioBtn) radioBtn.checked = true;
+                    
+                    // 全量异步渲染各菜单下的明细子表
+                    renderAllTables();
+                }
+            } catch (err) { 
+                console.error("从远程 KV 大盘状态同步失败:", err); 
+            }
+        });
 
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        // 统一数据渲染驱动器
+        function renderAllTables() {
+            // 渲染 WhatsApp 表格行视图
+            document.getElementById('waTable').innerHTML = localState.whatsappNumbers.map((item, index) => `
+                <tr>
+                    <td>${esc(item.label)}</td>
+                    <td><code>${esc(item.number)}</code></td>
+                    <td><button class="btn btn-danger" onclick="deleteRow('whatsappNumbers', ${index})">删除</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="3" style="text-align:center;color:#9ca3af;">暂无客服号码，请点击右上角添加</td></tr>';
 
-    function addWa() {
-      const label = document.getElementById('waLabel').value.trim();
-      const number = document.getElementById('waNum').value.trim();
-      if (!label || !number) return alert('请填写完整');
-      localState.whatsappNumbers.push({ label, number });
-      closeModal('waModal'); renderAllTables();
-    }
+            // 渲染 Meta 像素表格行视图
+            document.getElementById('metaTable').innerHTML = localState.metaPixels.map((item, index) => `
+                <tr>
+                    <td><code>${esc(item.id)}</code></td>
+                    <td>${esc(item.name)}</td>
+                    <td><button class="btn btn-danger" onclick="deleteRow('metaPixels', ${index})">删除</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="3" style="text-align:center;color:#9ca3af;">暂无 Meta 像素，请点击右上角添加</td></tr>';
 
-    function addPixel(type) {
-      const id = document.getElementById(type + 'Id').value.trim();
-      const name = document.getElementById(type + 'Name').value.trim();
-      if (!id || !name) return alert('请填写完整');
-      localState[type + 'Pixels'].push({ id, name });
-      closeModal(type + 'Modal'); renderAllTables();
-    }
+            // 渲染 TikTok 像素表格行视图
+            document.getElementById('tiktokTable').innerHTML = localState.tiktokPixels.map((item, index) => `
+                <tr>
+                    <td><code>${esc(item.id)}</code></td>
+                    <td>${esc(item.name)}</td>
+                    <td><button class="btn btn-danger" onclick="deleteRow('tiktokPixels', ${index})">删除</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="3" style="text-align:center;color:#9ca3af;">暂无 TikTok 像素，请点击右上角添加</td></tr>';
+        }
 
-    function deleteRow(arrayKey, index) { localState[arrayKey].splice(index, 1); renderAllTables(); }
+        // 模态弹框开关器
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+        // 控制器方法：向内存状态追加 WhatsApp 数据
+        function addWa() {
+            const label = document.getElementById('waLabel').value.trim();
+            const number = document.getElementById('waNum').value.trim();
+            if(!label || !number) return alert('请填写完整的号码配置数据');
+            localState.whatsappNumbers.push({ label, number });
+            closeModal('waModal'); 
+            renderAllTables();
+        }
+
+        // 控制器方法：向内存状态追加第三方广告像素（Meta / TikTok）
+        function addPixel(type) {
+            const id = document.getElementById(type + 'Id').value.trim();
+            const name = document.getElementById(type + 'Name').value.trim();
+            if(!id || !name) return alert('请填写完整的像素映射信息');
+            localState[type + 'Pixels'].push({ id, name });
+            closeModal(type + 'Modal'); 
+            renderAllTables();
+        }
+
+        // 控制器方法：行级关系型数据擦除
+        function deleteRow(arrayKey, index) { 
+            if(confirm('确定要删除此项配置吗？')) {
+                localState[arrayKey].splice(index, 1); 
+                renderAllTables(); 
+            }
+        }
+
+        // 🚀 终极持久化逻辑：安全聚合所有页签数据，绕过多级路由拦截，同步固化进云端 KV 数据库
         async function saveAllToCloud() {
+            // 实时捕获基础表单、单选框及复选框在内存中的最新状态
             localState.siteTitle = document.getElementById('siteTitle').value.trim();
             localState.siteNotice = document.getElementById('siteNotice').value.trim();
             localState.formEnabled = document.getElementById('formEnabled').checked;
@@ -362,22 +288,36 @@
             localState.routingMode = checkedRadio ? checkedRadio.value : "Single";
 
             try {
-                // 【核心修改】将请求路径改为全站独立的绝对 API 接口，彻底避免 .html 路径带来的多级路由错位
+                // 向网关发送安全的绝对根 API 路径请求
                 const res = await fetch('/api/update-kv-data', { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify({ config: localState }) 
                 });
-
-                if(res.ok) alert('🎉 成功！配置已固化到云端 KV 数据库！');
-                else alert('同步失败，状态码：' + res.status);
-            } catch(e) { alert('数据传输错误，请稍后重试。'); }
+                
+                if(res.ok) {
+                    alert('🎉 成功！所有页签的配置已安全同步并固化到云端 KV 数据库！');
+                } else if(res.status === 401) {
+                    alert('鉴权失效或登录已过期，请重新登录页面。');
+                    location.reload();
+                } else {
+                    alert('同步失败，云服务器返回异常状态码：' + res.status);
+                }
+            } catch(e) { 
+                alert('底座数据传输链路发生异常，请稍后重试。'); 
+            }
         }
 
+        // 安全注销会话
+        async function doLogout() { 
+            await fetch('/admin/logout-api'); 
+            location.reload(); 
+        }
 
-    async function doLogout() { await fetch('/admin/logout-api'); location.reload(); }
-    function esc(str) { return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ''; }
-  </script>
+        // 字符转义安全防御组件，预防 XSS 漏洞
+        function esc(str) { 
+            return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : ''; 
+        }
+    </script>
 </body>
-
 </html>
