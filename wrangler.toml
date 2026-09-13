@@ -12,7 +12,7 @@ run_worker_first = ["/api/*", "/admin*", "/admin/*"]
 # KV 数据库绑定
 [[kv_namespaces]]
 binding = "DATA_KV"
-id = "ea6c3cbc73b441968b0db08769f90a0f"
+id = "cd19620ffd864cb39261021accd1b602"
 
 # 环境变量配置（后台登录凭证）
 [vars]
