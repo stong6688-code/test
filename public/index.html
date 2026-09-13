@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINGJOWATCH - 官方商城</title>
+    <style>
+        /* 基础样式复位 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 60px;
+            /* 为顶部固定横条留出足够的空间，防止内容被遮挡 */
+            background: #f8fafc;
+            color: #333;
+            text-align: center;
+        }
+
+        /* 👑 修复后的顶部固定横条 (确保线上100%显示且不被压制) */
+        .top-keep-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45px;
+            line-height: 45px;
+            background: #ffffff !important;
+            text-align: center;
+            z-index: 99999 !important;
+            /* 极高级别，防止被任何前端框架或线上的组件遮挡 */
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .top-keep-header .label {
+            color: #000000 !important;
+            /* 强制写死黑色字，防止被线上夜间模式样式冲洗为白色 */
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        /* 主体内容容器 */
+        .main-container {
+            background: #ffffff;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 示例图片样式 */
+        .logo-img {
+            width: 140px;
+            height: auto;
+            margin-bottom: 25px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* 动态数据样式 */
+        h1 {
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .notice-box {
+            color: #b45309;
+            font-style: italic;
+            background: #fffbeb;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            display: inline-block;
+            margin: 20px 0;
+            max-width: 80%;
+            text-align: left;
+        }
+
+        /* 链接样式 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .admin-link {
+            margin-top: 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部固定横条结构 -->
+    <div class="top-keep-header">
+        <strong><span class="label">KINGJOWATCH</span></strong>
+    </div>
+
+    <!-- 主体展示区域 -->
+    <div class="main-container">
+        <!-- 🎯 显示位于 public/assets/logo.png 的本地静态图片 -->
+        <img class="logo-img" src="/assets/logo.png" alt="KINGJOWATCH Logo" onerror="this.src='https://unsplash.com'">
+
+        <!-- 🔄 动态读取并显示来自后台 KV 数据库的数据 -->
+        <h1 id="site_title_view">正在连接云端数据库...</h1>
+        <div class="notice-box" id="site_notice_view">正在拉取最新公告内容...</div>
+
+        <!-- 跳转到后台管理系统的链接 -->
+        <div class="admin-link">
+            <a href="/admin/">&rarr; 点击进入后台管理系统 (需密码凭证)</a>
+        </div>
+    </div>
+
+    <script>
+        // 页面载入时自动运行：通过 API 异步请求 Cloudflare Workers 从 KV 数据库读取的数据
+        async function fetchCloudflareKvData() {
+            try {
+                const response = await fetch('/api/get-public-data');
+                if (!response.ok) throw new Error('网络请求错误');
+
+                const data = await response.json();
+
+                // 将获取到的真实 KV 数据更新到对应的 HTML 节点上
+                document.getElementById('site_title_view').innerText = data.siteTitle;
+                document.getElementById('site_notice_view').innerText = "📢 店铺公告：" + data.siteNotice;
+            } catch (err) {
+                console.error('读取KV失败, 使用本地默认兜底显示:', err);
+                document.getElementById('site_title_view').innerText = "KINGJOWATCH 腕表专营店";
+                document.getElementById('site_notice_view').innerText = "📢 提示：暂未在云端检测到初始化数据，请进入后台设置。";
+            }
+        }
+
+        // 执行加载
+        fetchCloudflareKvData();
+    </script>
+</body>
+
+</html>
