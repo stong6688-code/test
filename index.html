@@ -1,14 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-    <meta charset="utf-8">
-    <title>KINGJOWATCH</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="theme-color" content="#ffffff">
+  <!-- 基础 SEO -->
+  <title>KingJoWatch</title>
+  <meta name="keywords" content="watch">
+
+  <!-- Open Graph 分享信息 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="KingJoWatch">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="KingJoWatch">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="assets/h5.css?v=1789041992">
+  <style>
+    img[data-width-mode="full"] {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+      display: block;
+    }
+
+    img[data-width-mode="auto"] {
+      width: auto !important;
+      height: auto !important;
+      max-width: 100%;
+      display: block;
+    }
+
+    img[data-width-mode="custom"] {
+      height: auto !important;
+      max-width: 100%;
+      display: block;
+    }
+
+    img[data-align="left"] {
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    }
+
+    img[data-align="center"] {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    img[data-align="right"] {
+      margin-left: auto !important;
+      margin-right: 0 !important;
+    }
+
+    .sp-hero img,
+    .sp-cover>img,
+    .sp-swiper-item img {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
-    <h1>站点加载中...</h1>
-    <script>window.location.href = '/admin/';</script> <!-- 如果你想让首页自动跳到后台，加上这行 -->
+  <div class="sp-container">
+    <div class="sp-content">
+      <p><a class="sp-float-btn sp-float-btn--middle" style="width: 50px; height: 50px; right: 12px;" href="#"
+          target="_blank" rel="noopener" data-position-value="50%" data-whatsapp-btn>
+          <img src="assets/img/20260913_4eb7e6a503f9.png" alt="" data-width-mode="full">
+        </a></p>
+      <!-- KEEP -->
+      <div
+        style="text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #fff; display: block !important;">
+        <strong><span class="label">KINGJOWATCH</span></strong>
+      </div>
+      <!-- /KEEP -->
+      <p><img src="assets/img/20260910_326aba3b43a9.jpg" alt="" data-width-mode="full"><img
+          src="assets/img/20260910_cde612ee948a.jpg" alt="" data-width-mode="full"><img
+          src="assets/img/20260910_52739b4dad63.jpg" alt="" data-width-mode="full"><img
+          src="assets/img/20260910_2790271e76e2.jpg" alt="" data-width-mode="full"><img
+          src="assets/img/20260910_4234d8d2cf99.jpg" alt="" data-width-mode="full"><img
+          src="assets/img/20260910_8cfaa98b5fab.jpg" alt="" data-width-mode="full"><a title="baidu"
+          href="http://www.baidu.com" target="_blank" rel="noopener"><img src="assets/img/20260910_e543f8e494a5.jpg"
+            alt="" data-width-mode="full"></a></p>
+      <p>&nbsp;</p>
+      <div class="sp-list">
+        <div class="sp-list-item" style="text-align: center;">&copy;2011-2026 版权所有</div>
+      </div>
+    </div>
+  </div>
+  <script src="assets/h5.js?v=1789032528"></script>
+
+  <!-- ===== 从 Worker KV 读取 WhatsApp 号码并替换按钮链接 ===== -->
+  <script>
+    (function () {
+      "use strict";
+
+      // 兜底号码：API 失败时用这个，保证按钮永远能用
+      var FALLBACK_NUMBER = '8618603024764';
+
+      function pickNumber(config) {
+        if (!config || !Array.isArray(config.whatsapp) || !config.whatsapp.length) {
+          return FALLBACK_NUMBER;
+        }
+        var list = config.whatsapp;
+
+        // 轮询模式：前端随机挑一个（真正轮询应由 Worker 处理）
+        if (config.routing_mode === 'round_robin') {
+          return list[Math.floor(Math.random() * list.length)].number;
+        }
+
+        // 单号码模式：优先默认号码，否则第一个
+        var target = list.find(function (x) { return x.is_default; }) || list[0];
+        return target.number;
+      }
+
+      function applyNumber(number) {
+        var clean = String(number || '').replace(/\D/g, '');
+        if (!clean) clean = FALLBACK_NUMBER;
+
+        var buttons = document.querySelectorAll('[data-whatsapp-btn]');
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].href = 'https://wa.me/' + clean;
+        }
+      }
+
+      async function boot() {
+        var config = null;
+        try {
+          var res = await fetch('/api/public/config', {
+            cache: 'no-store',
+            credentials: 'same-origin'
+          });
+          if (res.ok) config = await res.json();
+        } catch (e) {
+          console.warn('[Sulan] /api/public/config 读取失败，使用兜底号码:', e.message);
+        }
+        applyNumber(pickNumber(config));
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot, { once: true });
+      } else {
+        boot();
+      }
+    })();
+  </script>
 </body>
 
 </html>
