@@ -3,7 +3,7 @@ export async function onRequest(context) {
     const url = new URL(request.url);
 
     // ==================== 1. 后端开放 API 接口 ====================
-
+    
     // 公开接口：前台单页获取当前云端配置
     if (url.pathname === '/api/get-public-data') {
         const configRaw = await env.DATA_KV.get("admin_config") || "{}";
@@ -17,9 +17,9 @@ export async function onRequest(context) {
             routingMode: config.routingMode || "Single",
             formEnabled: config.formEnabled !== false
         }), {
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "Access-Control-Allow-Origin": "*"
+            headers: { 
+                "Content-Type": "application/json; charset=utf-8", 
+                "Access-Control-Allow-Origin": "*" 
             }
         });
     }
@@ -56,9 +56,8 @@ export async function onRequest(context) {
     }
 
     // 后台接口：更新完整的后台 KV 配置（必须校验登录状态）
-  // 替换修改为：
-if (url.pathname === '/api/update-kv-data' && request.method === 'POST')
-    
+    // 【核心修复】将路径统一变更为独立的绝对全局 API，彻底避免由于后台带 admin.html 后缀引发的 405 路由拦截
+    if (url.pathname === '/api/update-kv-data' && request.method === 'POST') {
         if (!(await checkLoginStatus(request, env))) {
             return new Response(JSON.stringify({ success: false, msg: "未授权访问" }), { status: 401 });
         }
@@ -82,7 +81,6 @@ if (url.pathname === '/api/update-kv-data' && request.method === 'POST')
     }
 
     // ==================== 3. 默认静态资源放行 ====================
-    // 其余所有请求（包含前台 index.html、后台已经放行的 admin.html、CSS、图片等），自动交给 Pages 资产引擎
     return env.ASSETS.fetch(request);
 }
 
